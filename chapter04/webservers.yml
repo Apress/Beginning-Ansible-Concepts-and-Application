@@ -1,0 +1,15 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - name: Ensure nginx is installed
+      apt:
+        name: nginx
+        state: present
+
+    - name: Push website content to the web root
+      copy  :
+        src: index.html
+        dest: /var/www/html/
+        mode: u=rw,g=r,o=r
+

@@ -1,0 +1,5 @@
+frontend awesome_ansible
+    bind *:{{ http_port }}
+    bind *:{{ https_port }} ssl crt /etc/ssl/website.pem
+    stats uri /haproxy?stats
+    default_backend web_servers

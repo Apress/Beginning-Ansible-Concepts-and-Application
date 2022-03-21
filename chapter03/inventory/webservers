@@ -1,0 +1,9 @@
+---
+webservers:
+  hosts:
+    web-001.local:  
+    web-002:
+      ansible_host: 192.168.98.112
+  vars:
+    http_port: 8080
+

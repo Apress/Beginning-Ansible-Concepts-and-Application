@@ -1,0 +1,25 @@
+- name: Ensure nginx is installed
+  apt:
+    name: nginx
+    state: present
+
+- name: Configure nginx
+  template:
+    src: nginx-default.j2
+    dest: /etc/nginx/sites-available/default
+    mode: u=rw,g=r,o=r
+  notify: "Reload web services"
+
+- name: Push website content to the web root
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    mode: u=rw,g=r,o=r
+
+- name: Firewall - Allow website connections
+  ufw:
+    rule: allow
+    port: "{{ http_port }}"
+  tags:
+    - firewall
+

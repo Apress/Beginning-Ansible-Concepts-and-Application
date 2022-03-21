@@ -1,0 +1,6 @@
+backend web_servers
+    balance roundrobin
+    {% for host in groups.webservers %}
+    server {{ host }} {{ host }}:{{ hostvars[host].http_port }}
+{% endfor %}
+

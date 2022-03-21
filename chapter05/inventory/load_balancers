@@ -1,0 +1,4 @@
+load_balancers:
+  hosts:
+    lb-001.local:
+

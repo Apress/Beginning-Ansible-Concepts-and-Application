@@ -1,0 +1,14 @@
+server {
+  listen {{ http_port }} default_server;
+
+  root /var/www/html;
+
+  server_name _;
+
+  {% if status_url is defined -%}
+  location /{{ status_url | default('status') }} {
+    stub_status on;
+  }
+  {%- endif %}
+}
+

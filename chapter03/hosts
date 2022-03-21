@@ -1,0 +1,17 @@
+[webservers]
+web-001.local
+web-002 ansible_host=192.168.98.112 ansible_port=22
+
+[webservers:vars]
+http_port=8080
+
+[load_balancers]
+lb-001.local
+
+[staging]
+web-002
+
+[production]
+web-001.local
+lb-001.local
+

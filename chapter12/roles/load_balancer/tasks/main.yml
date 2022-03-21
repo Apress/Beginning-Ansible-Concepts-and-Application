@@ -1,0 +1,47 @@
+---
+- name: Install HAProxy
+  apt:
+    name: haproxy
+    state: present
+    cache_valid_time: 60
+
+- name: Ensure SSL certificate is installed
+  copy:
+    src: website.pem
+    dest: /etc/ssl/
+
+- name: Create configuration directory
+  file:
+    path: /etc/haproxy/fragments
+    state: directory
+
+- name: Copy original configuration file
+  copy:
+    src: /etc/haproxy/haproxy.cfg
+    dest: /etc/haproxy/fragments/00_defaults.cfg
+    remote_src: yes
+    force: no
+
+- name: Setup frontends
+  template:
+    src: frontends.cfg.j2
+    dest: /etc/haproxy/fragments/40_frontends.cfg
+
+- name: Build configuration from fragments
+  assemble:
+    src: /etc/haproxy/fragments/
+    dest: /etc/haproxy/haproxy.cfg
+    validate: "haproxy -f %s -c"
+  notify: Reload HAProxy
+
+- name: Firewall - Allow website connections
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+  loop:
+    - "{{ http_port }}"
+    - "{{ https_port }}"
+  tags:
+    - firewall
+
+

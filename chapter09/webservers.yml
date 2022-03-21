@@ -1,0 +1,8 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - name: Build webservers
+      include_role:
+        name: webserver
+

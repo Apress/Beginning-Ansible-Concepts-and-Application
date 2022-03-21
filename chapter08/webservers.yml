@@ -1,0 +1,52 @@
+---
+- hosts: webservers
+  become: true
+  handlers:
+    - name: Reload nginx
+      service:
+        name: nginx
+        state: reloaded
+      listen: "Reload web services" 
+
+    - name: Validate that the http_port is working
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: "{{ http_port }}"
+        timeout: 5
+      connection: local
+      listen: "Reload web services"
+
+  tasks:
+    - name: Ensure nginx is installed
+      apt:
+        name: nginx
+        state: present
+
+    - name: Configure nginx
+      template:
+        src: nginx-default.j2
+        dest: /etc/nginx/sites-available/default
+        mode: u=rw,g=r,o=r
+      notify: "Reload web services"
+
+    - name: Push website content to the web root
+      template:
+        src: index.html.j2
+        dest: /var/www/html/index.html
+        mode: u=rw,g=r,o=r
+
+    - name: Firewall - Allow SSH connections
+      ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: Firewall - Allow website connections
+      ufw:
+        rule: allow
+        port: "{{ http_port }}"
+
+    - name: Firewall - Deny everything else
+      ufw:
+        state: enabled
+        policy: deny
+

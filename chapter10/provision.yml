@@ -1,0 +1,20 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - name: Build webservers
+      include_role:
+        name: webserver
+      tags:
+        - always
+
+- hosts: load_balancers
+  become: true
+  tasks:
+    - name: Build load balancers
+      include_role:
+        name: load_balancer
+      tags:
+        - always
+
+

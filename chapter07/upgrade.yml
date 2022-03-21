@@ -1,0 +1,15 @@
+---
+- hosts: web-001.local
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Upgrade all packages
+      apt:
+        upgrade: dist
+        update_cache: yes
+      register: upgrade_result
+
+    - name: Reboot the host
+      reboot:
+      when: upgrade_result.changed
+

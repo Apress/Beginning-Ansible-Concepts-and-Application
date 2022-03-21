@@ -1,0 +1,12 @@
+---
+- hosts: web-001.local
+  become: true
+  tasks:
+    - name: Upgrade all packages
+      apt:
+        upgrade: dist
+        update_cache: yes
+
+- name: Reboot the host
+  reboot:
+

@@ -1,0 +1,31 @@
+<?php
+
+// ** MySQL settings ** //
+define('DB_NAME', '{{ database.name }}');
+define('DB_USER', '{{ database.username }}');
+define('DB_PASSWORD', '{{ database.password }}');
+define('DB_HOST', '{{ database.host }}');
+
+// ** Authentication Unique Keys ** //
+define('AUTH_KEY', '{{ lookup('password',
+    '/dev/null length=128') }}');
+
+define('SECURE_AUTH_KEY', '{{ lookup('password',
+    '/dev/null length=128') }}');
+
+define('LOGGED_IN_KEY', '{{ lookup('password',
+    '/dev/null length=128') }}');
+
+define('NONCE_KEY', '{{ lookup('password', 
+    '/dev/null length=128') }}');
+
+// ** WordPress Database Table prefix. ** //
+$table_prefix = 'wp_';
+
+/** Absolute path to the WordPress directory. */
+if ( ! defined( 'ABSPATH' ) ) {
+	define( 'ABSPATH', __DIR__ . '/' );
+}
+
+/** Sets up WordPress vars and included files. */
+require_once ABSPATH . 'wp-settings.php';

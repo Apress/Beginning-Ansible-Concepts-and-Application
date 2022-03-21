@@ -1,0 +1,15 @@
+---
+- hosts: web-001.local
+  become: true
+  tasks:
+    - name: Ensure nginx is installed
+      apt:
+        name: nginx
+        state: latest
+        cache_valid_time: 60
+
+    - name: Uninstall tree command
+      apt:
+        name: tree
+        state: absent
+

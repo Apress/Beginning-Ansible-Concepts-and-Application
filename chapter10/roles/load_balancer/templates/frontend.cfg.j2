@@ -1,0 +1,4 @@
+frontend awesome_ansible
+    bind *:{{ http_port }}
+    stats uri /haproxy?stats
+    default_backend web_servers

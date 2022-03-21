@@ -1,0 +1,18 @@
+---
+- name: Download and unarchive Wordpress
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    remote_src: True
+    owner: root
+    group: www-data
+    dest: "/var/www/html/"
+    creates: "/var/www/html/wordpress"
+
+- name: Configure Wordpress
+  template:
+    src: "wp-config.php.j2"
+    dest: "/var/www/html/wordpress/wp-config.php"
+    owner: root
+    group: www-data
+    mode: 'u=rw,g=r,o='
+

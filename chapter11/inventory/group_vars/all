@@ -1,0 +1,11 @@
+---
+http_port: 80
+https_port: 443
+
+database:
+    host: db-001.local
+    name: wordpress
+    username: wordpress_rw
+    password: SomeSuperStrongPassword
+    root_password: EvenStrongerPassword
+

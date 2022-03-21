@@ -1,0 +1,15 @@
+---
+- name: Reload nginx
+  service:
+    name: nginx
+    state: reloaded
+  listen: "Reload web services"
+
+- name: Validate that the http_port is working
+  wait_for:
+    host: "{{ ansible_host }}"
+    port: "{{ http_port }}"
+    timeout: 5
+  connection: local
+  listen: "Reload web services"
+

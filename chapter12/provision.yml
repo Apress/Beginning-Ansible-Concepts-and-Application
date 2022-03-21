@@ -1,0 +1,35 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - name: Build webservers
+      include_role:
+        name: webserver
+      tags:
+        - always
+
+    - name: Install Wordpress
+      include_role:
+        name: wordpress
+      tags:
+        - always
+
+- hosts: databases
+  become: true
+  tasks:
+    - name: Build Databases
+      include_role:
+        name: database
+      tags:
+        - always
+
+- hosts: load_balancers
+  become: true
+  tasks:
+    - name: Build load balancers
+      include_role:
+        name: load_balancer
+      tags:
+        - always
+
+

@@ -1,0 +1,16 @@
+My website, served from {{ inventory_hostname }}
+
+<p>
+IP Addresses:<br />
+{% for ip in ansible_all_ipv4_addresses %}
+    {{ ip }}<br />
+{% endfor %}
+</p>
+
+<p>
+Operating System:<br />
+{% for key, value in ansible_lsb.items() %}
+    {{ key }}: {{ value }}<br />
+{% endfor %}
+</p>
+

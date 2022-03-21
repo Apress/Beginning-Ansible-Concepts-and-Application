@@ -1,0 +1,50 @@
+---
+- name: Install MySQL
+  apt:
+    name:
+      - mysql-server
+      - python3-pymysql
+    state: present
+
+- name: Set the root password
+  mysql_user:
+    name: root
+    password: "{{ database.root_password }}"
+    state: present
+    login_user: root
+    login_password: "{{database.root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  no_log: True
+
+- name: Create the wordpress database
+  mysql_db:
+    name: "{{ database.name }}"
+    state: present
+    login_user: root
+    login_password: "{{database.root_password }}"
+
+- name: Create the wordpress user
+  mysql_user:
+    name: "{{ database.username }}"
+    password: "{{database.password }}"
+    priv: "{{ database.name }}.*:ALL"
+    host: "%"
+    state: present
+    login_user: root
+    login_password: "{{database.root_password }}"
+  no_log: True
+
+- name: Ensure MySQL listens on the network
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: '^bind-address'
+    line: 'bind-address = 0.0.0.0'
+  notify:
+    - Restart MySQL
+
+- name: Firewall - Allow database connections
+  ufw:
+    rule: allow
+    port: "3306"
+  tags:
+    - firewall
